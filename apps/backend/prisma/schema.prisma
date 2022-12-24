@@ -9,3 +9,46 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
+
+model Word {
+  id                  Int                   @id @default(autoincrement())
+  createdAt           DateTime              @default(now()) @map("created_at")
+  name                String                @unique
+  WordsOnExaminations WordsOnExaminations[]
+
+  @@map("words")
+}
+
+model Examination {
+  id                  Int                   @id @default(autoincrement())
+  createdAt           DateTime              @default(now()) @map("created_at")
+  updatedAt           DateTime              @updatedAt @map("updated_at")
+  rememberedAt        DateTime?             @map("remembered_at")
+  answeredAt          DateTime?             @map("answered_at")
+  WordsOnExaminations WordsOnExaminations[]
+  Answer              Answer[]
+
+  @@map("examinations")
+}
+
+model WordsOnExaminations {
+  word          Word        @relation(fields: [wordId], references: [id])
+  wordId        Int         @map("word_id")
+  examination   Examination @relation(fields: [examinationId], references: [id])
+  examinationId Int         @map("examination_id")
+  position      Int
+
+  @@id([wordId, examinationId])
+  @@map("words_on_examinations")
+}
+
+model Answer {
+  id            Int         @id @default(autoincrement())
+  createdAt     DateTime    @default(now()) @map("created_at")
+  examination   Examination @relation(fields: [examinationId], references: [id])
+  examinationId Int         @map("examination_id")
+  value         String
+  position      Int
+
+  @@map("answers")
+}
