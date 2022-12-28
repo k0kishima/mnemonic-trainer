@@ -3,7 +3,7 @@
 # ------------------------------------------------------
 
 type Query {
-  words: [Word!]
+  words(limit: Int!): [Word!]
 }
 
 type Word {
