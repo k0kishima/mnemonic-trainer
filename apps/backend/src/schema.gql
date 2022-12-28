@@ -1,0 +1,12 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Query {
+  words(limit: Int!): [Word!]
+}
+
+type Word {
+  id: ID!
+  name: String!
+}
